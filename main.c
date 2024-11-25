@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "stdint.h"
 #include "SG904NUCLEO_64.h"
+#include "L293D4NUCLEO_64.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +51,11 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-int modo = 1, index = 0;
+/*
+ * Variáveis para teste do motor, indicam a magnitude do PWM (index) e a sua direção (modo).
+ * index varia de 0 a 100 e modo alterna entre 1 e -1.
+ */
+int8_t modo = 1, index = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -115,9 +120,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  /*
+	   * Aumenta/Diminui magnitude linearmente a depender da direção
+	   */
 	  if(index == 100 && modo == 1) modo = -1;
 	  if(index == 0 && modo == -1) modo = 1;
 	  SG90_SetPWM(htim4, TIM_CHANNEL_1, 1250, 44 + index);
+	  L293D_SetPWM(htim3, TIM_CHANNEL_2, index);
 	  HAL_Delay(200);
 	  index+= modo;
   }
