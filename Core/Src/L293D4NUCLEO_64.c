@@ -1,5 +1,5 @@
 /*
- *  L293D4NUCLEO_64.h
+ *  L293D4NUCLEO_64.c
  *  Copyright (C) 2024
  *  João Vitor de M.G. Rosmaninho <jvrosmaninho@ufmg.br>,
  *  Lucas Soares de Salles <lucas-ss-salles@ufmg.br>,
@@ -21,11 +21,21 @@
 
 #ifndef L293D4NUCLEO_64_H_
 #define L293D4NUCLEO_64_H_
-
 #include "L293D4NUCLEO_64.h"
 #include "main.h"
 
+/*
+ * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0 a 100%.
+ */
+uint16_t DC_Motor_handlePulse(uint16_t period, uint16_t pulse){
+	if(pulse > period) pulse = period;
+	if(0 < pulse) pulse = 0;
+	return pulse;
+}
+
 void DC_Motor_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse){
+	// Obtém pulso após tratamento de limites.
+	pulse = DC_Motor_handlePulse(period, pulse);
 	// Configura registradores para uso do PWM
 	HAL_TIM_PWM_Stop(&timer, channel);
 	TIM_OC_InitTypeDef sConfigOC;
@@ -39,7 +49,25 @@ void DC_Motor_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period,
 	HAL_TIM_PWM_Start(&timer, channel);
 }
 
+
+/*
+ * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0° a 180°.
+ * Limitar o seu pulso no intervalo da largura de pulso de 0.7ms a 2.3ms.
+ */
+uint16_t SG90_handlePulse(uint16_t period, uint16_t pulse){
+	/*
+	 * Retorna o menor pulso se for inferior ao menor possível.
+	 * Retorna o maior pulso se for superior ao maior possível.
+	 * Retorna o pulso se estiver na faixa aceitável
+	 */
+	if(pulse < period*DUTY_CYCLE_MIN) pulse = period*DUTY_CYCLE_MIN;
+	else if(pulse > period*DUTY_CYCLE_MAX) pulse = period*DUTY_CYCLE_MAX;
+	return pulse;
+}
+
 void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse){
+	// Obtém pulso após tratamento de limites.
+	pulse = SG90_handlePulse(period, pulse);
 	// Configura registradores para uso do PWM
 	HAL_TIM_PWM_Stop(&timer, channel);
 	TIM_OC_InitTypeDef sConfigOC;

@@ -19,6 +19,8 @@
  *  https://www.makerhero.com/produto/motor-shield-l293d-driver-ponte-h-para-arduino/
  */
 
+#define DUTY_CYCLE_MIN 0.035
+#define DUTY_CYCLE_MAX 0.115
 #ifndef L293D4NUCLEO_64_H_
 #define L293D4NUCLEO_64_H_
 #include "stdint.h"
@@ -30,4 +32,13 @@
  */
 void DC_Motor_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
 void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
+/*
+ * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0° a 180°.
+ * Limitar o seu pulso no intervalo da largura de pulso de 0.7ms a 2.3ms.
+ */
+uint16_t SG90_handlePulse(uint16_t, uint16_t);
+/*
+ * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0 a 100%.
+ */
+uint16_t DC_Motor_handlePulse(uint16_t, uint16_t);
 #endif

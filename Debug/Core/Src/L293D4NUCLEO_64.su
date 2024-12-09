@@ -1,2 +1,4 @@
-../Core/Src/L293D4NUCLEO_64.c:28:6:DC_Motor_SetPWM	40	static
-../Core/Src/L293D4NUCLEO_64.c:42:6:SG90_SetPWM	40	static
+../Core/Src/L293D4NUCLEO_64.c:30:10:DC_Motor_handlePulse	16	static
+../Core/Src/L293D4NUCLEO_64.c:36:6:DC_Motor_SetPWM	40	static
+../Core/Src/L293D4NUCLEO_64.c:57:10:SG90_handlePulse	24	static
+../Core/Src/L293D4NUCLEO_64.c:68:6:SG90_SetPWM	40	static

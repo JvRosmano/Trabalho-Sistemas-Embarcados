@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "stdint.h"
 #include "L293D4NUCLEO_64.h"
+#include "HMC5883L_4_NUCLEO_64.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,13 @@ UART_HandleTypeDef huart3;
  * index varia de 0 a 100 e modo alterna entre 1 e -1.
  */
 int8_t modo = 1, index = 0;
+// variables for receiving DATA
+uint8_t DataX[2];
+uint16_t Xaxis = 0;
+uint8_t DataY[2];
+uint16_t Yaxis = 0;
+uint8_t DataZ[2];
+uint16_t Zaxis = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,6 +117,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  HMC5883L_Init(hi2c1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -121,13 +130,22 @@ int main(void)
 	  /*
 	   * Aumenta/Diminui magnitude linearmente a depender da direção
 	   */
-	  if(index == 100 && modo == 1) modo = -1;
-	  if(index == 0 && modo == -1) modo = 1;
-	  SG90_SetPWM(htim4, TIM_CHANNEL_1, 1250, 44 + index);
-	  DC_Motor_SetPWM(htim3, TIM_CHANNEL_2, 2000, index*20);
-//	  setMotorSpeed(&htim3,TIM_CHANNEL_2,1250,1000);
-	  HAL_Delay(200);
-	  index+= modo;
+//	  if(index == 100 && modo == 1) modo = -1;
+//	  if(index == 0 && modo == -1) modo = 1;
+//	  SG90_SetPWM(htim4, TIM_CHANNEL_1, 1250, 44 + index);
+//	  DC_Motor_SetPWM(htim3, TIM_CHANNEL_2, 2000, index*20);
+////	  setMotorSpeed(&htim3,TIM_CHANNEL_2,1250,1000);
+//	  HAL_Delay(200);
+//	  index+= modo;
+	  // RECEIVE X_axis
+	  HAL_I2C_Mem_Read(&hi2c1,HMC5883L_ADDRESS,HMC5883l_ADD_DATAX_MSB_MULTI,1,DataX,2,100);
+	  Xaxis = ((DataX[1]<<8) | DataX[0])/660.f;
+	  // RECEIVE Y_axis
+	  HAL_I2C_Mem_Read(&hi2c1,HMC5883L_ADDRESS,HMC5883l_ADD_DATAY_MSB_MULTI,1,DataY,2,100);
+	  Yaxis = ((DataY[1]<<8) | DataY[0])/660.f;
+	  // RECEIVE Z_axis
+	  HAL_I2C_Mem_Read(&hi2c1,HMC5883L_ADDRESS,HMC5883l_ADD_DATAZ_MSB_MULTI,1,DataZ,2,100);
+	  Zaxis = ((DataZ[1]<<8) | DataZ[0])/660.f;
   }
   /* USER CODE END 3 */
 }

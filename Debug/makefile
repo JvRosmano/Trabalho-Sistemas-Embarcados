@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Entrega1Trabalho
+BUILD_ARTIFACT_NAME := TrabalhoBarco
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Entrega1Trabalho.elf \
+TrabalhoBarco.elf \
 
 MAP_FILES += \
-Entrega1Trabalho.map \
+TrabalhoBarco.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Entrega1Trabalho.list \
+TrabalhoBarco.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Entrega1Trabalho.elf secondary-outputs
+main-build: TrabalhoBarco.elf secondary-outputs
 
 # Tool invocations
-Entrega1Trabalho.elf Entrega1Trabalho.map: $(OBJS) $(USER_OBJS) C:\Users\jv_ro\STM32CubeIDE\workspace_1.16.1\Entrega1Trabalho\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Entrega1Trabalho.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\jv_ro\STM32CubeIDE\workspace_1.16.1\Entrega1Trabalho\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Entrega1Trabalho.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TrabalhoBarco.elf TrabalhoBarco.map: $(OBJS) $(USER_OBJS) C:\Users\jv_ro\STM32CubeIDE\workspace_1.16.1\TrabalhoBarco\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TrabalhoBarco.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\jv_ro\STM32CubeIDE\workspace_1.16.1\TrabalhoBarco\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TrabalhoBarco.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Entrega1Trabalho.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Entrega1Trabalho.list"
+TrabalhoBarco.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "TrabalhoBarco.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Entrega1Trabalho.elf Entrega1Trabalho.list Entrega1Trabalho.map default.size.stdout
+	-$(RM) TrabalhoBarco.elf TrabalhoBarco.list TrabalhoBarco.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
