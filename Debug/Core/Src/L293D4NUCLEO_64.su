@@ -1,4 +1,7 @@
 ../Core/Src/L293D4NUCLEO_64.c:30:10:DC_Motor_handlePulse	16	static
-../Core/Src/L293D4NUCLEO_64.c:36:6:DC_Motor_SetPWM	40	static
-../Core/Src/L293D4NUCLEO_64.c:57:10:SG90_handlePulse	24	static
-../Core/Src/L293D4NUCLEO_64.c:68:6:SG90_SetPWM	40	static
+../Core/Src/L293D4NUCLEO_64.c:39:6:DC_Motor_SetPWM	40	static
+../Core/Src/L293D4NUCLEO_64.c:60:10:SG90_handlePulse	24	static
+../Core/Src/L293D4NUCLEO_64.c:73:6:SG90_SetPWM	40	static
+../Core/Src/L293D4NUCLEO_64.c:92:7:SG90_rad2Degree	16	static
+../Core/Src/L293D4NUCLEO_64.c:99:10:SG90_handleAngle	16	static
+../Core/Src/L293D4NUCLEO_64.c:114:10:SG90_angle2Pulse	40	static

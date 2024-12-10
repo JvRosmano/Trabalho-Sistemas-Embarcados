@@ -87,15 +87,11 @@ void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uin
 	HAL_TIM_PWM_Start(&timer, channel);
 }
 /*
-Função que receberá um ângulo e retornará o valor de pulso que o leme deve se movimentar para atender o ângulo.
+Converter graus para radianos.
 */
-uint16_t SG90_angle2Pulse(float angle, uint16_t period)
+float SG90_rad2Degree(float angleRad)
 {
-	angle = SG90_handleAngle(angle);
-	// Percentual que se deve mover
-	float percentualAngulo = angle / 180;
-	// Retorna o pulso necessário para movimentar esse ângulo com base no período e nos duty cycles
-	return (uint16_t)((period * DUTY_CYCLE_MAX - period * DUTY_CYCLE_MIN) + period * DUTY_CYCLE_MIN * percentualAngulo);
+	return angleRad * 180 / M_PI;
 }
 /*
 Função que irá tratar o ângulo recebibo para as faixas de 0 a 180°.
@@ -113,10 +109,14 @@ uint16_t SG90_handleAngle(float angle)
 	return angle;
 }
 /*
-Converter graus para radianos.
+Função que receberá um ângulo e retornará o valor de pulso que o leme deve se movimentar para atender o ângulo.
 */
-float SG90_rad2Degree(float angleRad)
+uint16_t SG90_angle2Pulse(float angle, uint16_t period)
 {
-	return angleRad * 180 / M_PI;
+	angle = SG90_handleAngle(angle);
+	// Percentual que se deve mover
+	float percentualAngulo = angle / 180;
+	// Retorna o pulso necessário para movimentar esse ângulo com base no período e nos duty cycles
+	return (uint16_t)((period * DUTY_CYCLE_MAX - period * DUTY_CYCLE_MIN) + period * DUTY_CYCLE_MIN * percentualAngulo);
 }
 #endif
