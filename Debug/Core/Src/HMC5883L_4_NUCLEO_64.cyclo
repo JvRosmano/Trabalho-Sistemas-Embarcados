@@ -1,1 +1,2 @@
-../Core/Src/HMC5883L_4_NUCLEO_64.c:107:6:HMC5883L_Init	1
+../Core/Src/HMC5883L_4_NUCLEO_64.c:106:7:filterAxis_Data	4
+../Core/Src/HMC5883L_4_NUCLEO_64.c:125:6:HMC5883L_Init	1

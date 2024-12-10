@@ -41,4 +41,16 @@ uint16_t SG90_handlePulse(uint16_t, uint16_t);
  * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0 a 100%.
  */
 uint16_t DC_Motor_handlePulse(uint16_t, uint16_t);
+/*
+Função que receberá um ângulo e retornará o valor de pulso que o leme deve se movimentar para atender o ângulo.
+*/
+uint16_t SG90_angle2Pulse(float angle, uint16_t period);
+/*
+Função que irá tratar o ângulo recebibo para as faixas de 0 a 180°.
+*/
+uint16_t SG90_handleAngle(float angle);
+/*
+Converter graus para radianos.
+*/
+float SG90_rad2Degree(float angleRad);
 #endif
