@@ -5,9 +5,14 @@
  *  Lucas Soares de Salles <lucas-ss-salles@ufmg.br>,
  *  Stephanie Costa de Avelar <stephanieavelar@ufmg.br>
  *
- *  Version 1.0 - API with the following implemented function:
+ *  Version 1.1 - API with the following implemented function:
  *  void L293D_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
  *  void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
+ *  uint16_t SG90_handlePulse(uint16_t, uint16_t);
+ *  uint16_t DC_Motor_handlePulse(uint16_t, uint16_t);
+ *  uint16_t SG90_angle2Pulse(float angle, uint16_t period);
+ *  uint16_t SG90_handleAngle(float angle);
+ *  float L293D_rad2Degree(float angleRad);
  *
  *  Based on notes from professor Ricardo O. Duarte <ricardoduarte@ufmg.br> for embedded systems programming course.
  *
@@ -70,6 +75,7 @@ uint16_t SG90_handlePulse(uint16_t period, uint16_t pulse)
 		pulse = period * DUTY_CYCLE_MAX;
 	return pulse;
 }
+
 void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse)
 {
 	// Obtém pulso após tratamento de limites.
@@ -89,7 +95,7 @@ void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uin
 /*
 Converter graus para radianos.
 */
-float SG90_rad2Degree(float angleRad)
+float L293D_rad2Degree(float angleRad)
 {
 	return angleRad * 180 / M_PI;
 }
@@ -98,8 +104,8 @@ Função que irá tratar o ângulo recebibo para as faixas de 0 a 180°.
 */
 uint16_t SG90_handleAngle(float angle)
 {
-	// Converte graus para radianos.
-	angle = SG90_rad2Degree(angle);
+	// Converte radianos para graus.
+	angle = L293D_rad2Degree(angle);
 	// Converter ângulo de -90 a 90 para 0 a 180.
 	angle += 90;
 	if (angle > 180)

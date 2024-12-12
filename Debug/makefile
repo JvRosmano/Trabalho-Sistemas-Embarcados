@@ -60,8 +60,8 @@ all: main-build
 main-build: TrabalhoBarco.elf secondary-outputs
 
 # Tool invocations
-TrabalhoBarco.elf TrabalhoBarco.map: $(OBJS) $(USER_OBJS) C:\Users\jv_ro\Documents\Trabalho-Sistemas-Embarcados\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "TrabalhoBarco.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\jv_ro\Documents\Trabalho-Sistemas-Embarcados\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TrabalhoBarco.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TrabalhoBarco.elf TrabalhoBarco.map: $(OBJS) $(USER_OBJS) C:\Users\Lenovo.DESKTOP-AG5GJ27\Desktop\Embarcado\Teste\Trabalho-Sistemas-Embarcados-Entrega2\Trabalho-Sistemas-Embarcados-Entrega2\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TrabalhoBarco.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Lenovo.DESKTOP-AG5GJ27\Desktop\Embarcado\Teste\Trabalho-Sistemas-Embarcados-Entrega2\Trabalho-Sistemas-Embarcados-Entrega2\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TrabalhoBarco.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

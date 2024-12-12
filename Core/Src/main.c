@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 #include "stdint.h"
 #include "L293D4NUCLEO_64.h"
 #include "HMC5883L_4_NUCLEO_64.h"
@@ -33,7 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DEFAULT_PERIOD 1250
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,14 +52,9 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-/*
- * Variáveis para teste do magnetômetro, indicam o buffer que recebe dados do magnetômetro e um objeto
- * do tipo Ponto, que contém os dados de X, Y e ângulo.
- */
-uint8_t buffer[6];
-uint8_t bufferX[8], bufferY[8];
-Ponto teste;
-uint16_t pulse;
+// variables for receiving DATA
+Position PosBoat;
+float scale = 1.52;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,9 +109,6 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  /*
-   * Inicia o magnetômetro com configurações padrões.
-   */
   HMC5883L_Init(hi2c1);
   /* USER CODE END 2 */
 
@@ -124,26 +117,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    // Realiza leitura da posição
+    HMC5883L_GetPosition(hi2c1, &PosBoat);
+    // HMC5883L_GetNorthPosition
+    // HMC5883L_GetDesiredAngle
+    // HMC5883_HandleAngle
+    // SG90_angle2Pulse
+    // SG90_SetPWM
     /* USER CODE BEGIN 3 */
-    // Recebe dados do magnetômetro.
-    // Lê 8 amostras do magnetômetro
-    for (int i = 0; i < 8; i++)
-    {
-      HAL_I2C_Mem_Read(&hi2c1, HMC5883L_ADDRESS, 0x03, 1, buffer, 6, 100);
-      bufferX[i] = ((buffer[0] << 8) | buffer[1]) * 0.92;
-      bufferY[i] = ((buffer[2] << 8) | buffer[3]) * 0.92;
-      HAL_Delay(50);
-    }
-    //  Filtra amostras obtidas e realiza média das mesmas
-    teste.x = HMC5883L_FilterAxisData(bufferX);
-    teste.y = HMC5883L_FilterAxisData(bufferY);
-    // Obtém ângulo
-    teste.angle = atan2(teste.x, teste.y);
-    // Obtém pulso a ser aplicado no leme
-    pulse = SG90_angle2Pulse(teste.angle, DEFAULT_PERIOD);
-    // Aplica PWM no leme
-    SG90_SetPWM(htim4, TIM_CHANNEL_1, DEFAULT_PERIOD, pulse);
   }
 }
 /* USER CODE END 3 */
