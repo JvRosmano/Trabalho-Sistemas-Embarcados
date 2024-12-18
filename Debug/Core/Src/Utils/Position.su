@@ -1,0 +1,6 @@
+../Core/Src/Utils/Position.c:52:6:LocationService_Init	24	static
+../Core/Src/Utils/Position.c:74:7:LocationService_CalculateDistance	16	static
+../Core/Src/Utils/Position.c:79:6:LocationService_UpdateLocation	552	static
+../Core/Src/Utils/Position.c:114:12:LocationService_GetLocation	24	static
+../Core/Src/Utils/Position.c:119:7:LocationService_GetArrivalAngle	8	static
+../Core/Src/Utils/Position.c:124:9:LocationService_IsInDestiny	4	static

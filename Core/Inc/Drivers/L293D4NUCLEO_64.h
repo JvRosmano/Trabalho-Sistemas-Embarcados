@@ -8,11 +8,11 @@
  *  Version 1.1 - API with the following implemented function:
  *  void L293D_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
  *  void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
- *  uint16_t SG90_handlePulse(uint16_t, uint16_t);
- *  uint16_t DC_Motor_handlePulse(uint16_t, uint16_t);
- *  uint16_t SG90_angle2Pulse(float angle, uint16_t period);
+ *  uint16_t DC_Motor_handlePulse(uint16_t period, uint16_t pulse);
+ *  uint16_t SG90_handlePulse(uint16_t period, uint16_t pulse);
  *  uint16_t SG90_handleAngle(float angle);
- *  float L293D_rad2Degree(float angleRad);
+ *  uint16_t SG90_angle2Pulse(float angle, uint16_t period);
+ *  void SG90_Update(TIM_HandleTypeDef timer, uint32_t channel, float* ActualAngle, float* DesireAngle);
  *
  *  Based on notes from professor Ricardo O. Duarte <ricardoduarte@ufmg.br> for embedded systems programming course.
  *
@@ -58,4 +58,9 @@ uint16_t SG90_handleAngle(float angle);
 Converter graus para radianos.
 */
 float L293D_rad2Degree(float angleRad);
+/*
+ * Atualiza pwm do leme a partir dos valores desejados de ângulo
+ */
+void SG90_Update(TIM_HandleTypeDef timer, uint32_t channel, float* ActualAngle, float* DesireAngle);
+
 #endif

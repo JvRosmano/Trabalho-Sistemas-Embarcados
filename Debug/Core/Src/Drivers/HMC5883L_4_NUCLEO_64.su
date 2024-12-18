@@ -1,0 +1,6 @@
+../Core/Src/Drivers/HMC5883L_4_NUCLEO_64.c:31:6:HMC5883L_Init	32	static
+../Core/Src/Drivers/HMC5883L_4_NUCLEO_64.c:40:9:meanData	24	static
+../Core/Src/Drivers/HMC5883L_4_NUCLEO_64.c:48:9:FilterData	24	static
+../Core/Src/Drivers/HMC5883L_4_NUCLEO_64.c:58:6:CompassReadAxis	40	static
+../Core/Src/Drivers/HMC5883L_4_NUCLEO_64.c:68:7:VectorToAngle	24	static
+../Core/Src/Drivers/HMC5883L_4_NUCLEO_64.c:72:6:getDirectionBoat	120	static

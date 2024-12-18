@@ -8,11 +8,11 @@
  *  Version 1.1 - API with the following implemented function:
  *  void L293D_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
  *  void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse);
- *  uint16_t SG90_handlePulse(uint16_t, uint16_t);
- *  uint16_t DC_Motor_handlePulse(uint16_t, uint16_t);
- *  uint16_t SG90_angle2Pulse(float angle, uint16_t period);
+ *  uint16_t DC_Motor_handlePulse(uint16_t period, uint16_t pulse);
+ *  uint16_t SG90_handlePulse(uint16_t period, uint16_t pulse);
  *  uint16_t SG90_handleAngle(float angle);
- *  float L293D_rad2Degree(float angleRad);
+ *  uint16_t SG90_angle2Pulse(float angle, uint16_t period);
+ *  void SG90_Update(TIM_HandleTypeDef timer, uint32_t channel, float* ActualAngle, float* DesireAngle);
  *
  *  Based on notes from professor Ricardo O. Duarte <ricardoduarte@ufmg.br> for embedded systems programming course.
  *
@@ -26,23 +26,18 @@
 
 #ifndef L293D4NUCLEO_64_H_
 #define L293D4NUCLEO_64_H_
-#include "L293D4NUCLEO_64.h"
+#include "Drivers/L293D4NUCLEO_64.h"
 #include "main.h"
-
 /*
  * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0 a 100%.
  */
-uint16_t DC_Motor_handlePulse(uint16_t period, uint16_t pulse)
-{
-	if (pulse > period)
-		pulse = period;
-	if (0 < pulse)
-		pulse = 0;
+uint16_t DC_Motor_handlePulse(uint16_t period, uint16_t pulse){
+	if(pulse > period) pulse = period;
+	if(0 < pulse) pulse = 0;
 	return pulse;
 }
 
-void DC_Motor_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse)
-{
+void DC_Motor_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse){
 	// Obtém pulso após tratamento de limites.
 	pulse = DC_Motor_handlePulse(period, pulse);
 	// Configura registradores para uso do PWM
@@ -62,22 +57,18 @@ void DC_Motor_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period,
  * É preciso tratar o pulso que é dado. O motor tem funcionamento de 0° a 180°.
  * Limitar o seu pulso no intervalo da largura de pulso de 0.7ms a 2.3ms.
  */
-uint16_t SG90_handlePulse(uint16_t period, uint16_t pulse)
-{
+uint16_t SG90_handlePulse(uint16_t period, uint16_t pulse){
 	/*
 	 * Retorna o menor pulso se for inferior ao menor possível.
 	 * Retorna o maior pulso se for superior ao maior possível.
 	 * Retorna o pulso se estiver na faixa aceitável
 	 */
-	if (pulse < period * DUTY_CYCLE_MIN)
-		pulse = period * DUTY_CYCLE_MIN;
-	else if (pulse > period * DUTY_CYCLE_MAX)
-		pulse = period * DUTY_CYCLE_MAX;
+	if(pulse < period*DUTY_CYCLE_MIN) pulse = period*DUTY_CYCLE_MIN;
+	else if(pulse > period*DUTY_CYCLE_MAX) pulse = period*DUTY_CYCLE_MAX;
 	return pulse;
 }
 
-void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse)
-{
+void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uint16_t pulse){
 	// Obtém pulso após tratamento de limites.
 	pulse = SG90_handlePulse(period, pulse);
 	// Configura registradores para uso do PWM
@@ -93,23 +84,14 @@ void SG90_SetPWM(TIM_HandleTypeDef timer, uint32_t channel, uint16_t period, uin
 	HAL_TIM_PWM_Start(&timer, channel);
 }
 /*
-Converter graus para radianos.
-*/
-float L293D_rad2Degree(float angleRad)
-{
-	return angleRad * 180 / M_PI;
-}
-/*
-Função que irá tratar o ângulo recebibo para as faixas de 0 a 180°.
+Função que irá tratar o ângulo recebibo para as faixas de 0 a 360°.
 */
 uint16_t SG90_handleAngle(float angle)
 {
-	// Converte radianos para graus.
-	angle = L293D_rad2Degree(angle);
-	// Converter ângulo de -90 a 90 para 0 a 180.
-	angle += 90;
-	if (angle > 180)
-		angle = 180;
+	// Converter ângulo de -180 a 180 para 0 a 360.
+	angle += 180;
+	if (angle > 360)
+		angle = 360;
 	if (angle < 0)
 		angle = 0;
 	return angle;
@@ -119,10 +101,16 @@ Função que receberá um ângulo e retornará o valor de pulso que o leme deve 
 */
 uint16_t SG90_angle2Pulse(float angle, uint16_t period)
 {
-	angle = SG90_handleAngle(angle);
-	// Percentual que se deve mover
-	float percentualAngulo = angle / 180;
-	// Retorna o pulso necessário para movimentar esse ângulo com base no período e nos duty cycles
-	return (uint16_t)((period * DUTY_CYCLE_MAX - period * DUTY_CYCLE_MIN) + period * DUTY_CYCLE_MIN * percentualAngulo);
+	float aux_angle;
+	aux_angle = SG90_handleAngle(angle);
+	return (44 + aux_angle/3.6);
 }
+
+void SG90_Update(TIM_HandleTypeDef timer, uint32_t channel, float* ActualAngle, float* DesireAngle){
+	int pulse;
+	float DiffAngle = ActualAngle - DesireAngle;
+	pulse = SG90_angle2Pulse(DiffAngle, 1250);
+	SG90_SetPWM(timer, channel, 1250, pulse);
+}
+
 #endif

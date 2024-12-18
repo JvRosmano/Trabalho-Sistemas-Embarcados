@@ -1,0 +1,12 @@
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:50:6:JDY18Driver_Init	16	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:67:6:JDY18Driver_SendData	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:75:6:JDY18Driver_SetName	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:84:6:JDY18Driver_SetBaudRate	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:93:6:JDY18Driver_SetRole	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:102:6:JDY18Driver_SetParity	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:111:6:JDY18Driver_SetStopBit	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:120:6:JDY18Driver_InquireDevices	56	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:129:6:JDY18Driver_GetScannedDevices	16	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:134:6:JDY18Driver_LoadDeviceInfo	104	dynamic
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:153:6:JDY18Driver_ParseScanResponse	24	static
+../Core/Src/Drivers/JDY18_4_NUCLEO_64.c:171:6:HAL_UART_RxCpltCallback	24	static
