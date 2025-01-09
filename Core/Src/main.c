@@ -419,9 +419,9 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 float executeControl(){
-    error = PosBoat.angle - DesirePos.angle;
-	integrador += error;
-	return Kp*error + Ki*integrador;
+    erro = PosBoat.angle - DesirePos.angle;
+	integrador += erro;
+	return Kp*erro + Ki*integrador;
 }
 
 /* USER CODE END 4 */
