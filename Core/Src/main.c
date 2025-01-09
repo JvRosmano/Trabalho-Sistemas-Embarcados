@@ -56,6 +56,9 @@ UART_HandleTypeDef huart3;
 // variables for receiving DATA
 Position PosBoat;
 Position DesirePos;
+int16_t erro;
+float integrador = 0;
+uint8_t Kp = 1, Ki = 1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +70,8 @@ static void MX_USART2_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
-
+// Executar controlador PI
+float executeControl();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -118,6 +122,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	/* USER CODE BEGIN 3 */
+
 	  // Enquanto o barco não chegar no destino é preciso atuar controle sobre ele
 	  if(LocationService_IsInDestiny() != 1){
 		  // Atualiza magnetômetro
@@ -125,10 +131,9 @@ int main(void)
 		  // Atualiza beacon
 		  LocationService_UpdateLocation();
 		  DesirePos.angle = LocationService_GetArrivalAngle();
+		  PosBoat.angle -= executeControl();
 		  SG90_Update(htim4, TIM_CHANNEL_1, &PosBoat.angle,&DesirePos.angle);
-
 	  }
-	/* USER CODE BEGIN 3 */
   }
 }
   /* USER CODE END 3 */
@@ -413,6 +418,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+float executeControl(){
+    error = PosBoat.angle - DesirePos.angle;
+	integrador += error;
+	return Kp*error + Ki*integrador;
+}
 
 /* USER CODE END 4 */
 
