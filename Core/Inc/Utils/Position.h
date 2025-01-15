@@ -46,9 +46,8 @@ typedef struct {
  * @brief Initialize location service.
  *
  * @param huart UART_HandleTypeDef pointer to serial handler structure.
- * @param htim TIM_HandleTypeDef pointer to timer handler structure.
  */
-void LocationService_Init(UART_HandleTypeDef* huart, TIM_HandleTypeDef* htim);
+void LocationService_Init(UART_HandleTypeDef* huart);
 
 /**
  * @brief Calculate the distance between the beacon and the master.

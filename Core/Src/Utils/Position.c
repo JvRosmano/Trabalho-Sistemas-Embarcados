@@ -49,11 +49,11 @@ location_t masterLocation = { 0, 0 };
 float trilaterationCalcCPartial = 0;
 float trilaterationCalcFPartial = 0;
 
-void LocationService_Init(UART_HandleTypeDef *huart, TIM_HandleTypeDef* htim)
+void LocationService_Init(UART_HandleTypeDef *huart)
 {
 	bleHandler.huart = huart;
 	bleHandler.name = MASTER_BLE_NAME;
-	bleHandler.baudRate = BAUD_9600;
+	bleHandler.baudRate = BAUD_230400;
 	bleHandler.role = MASTER;
 	bleHandler.parity = NO_PARITY;
 	bleHandler.stopBit = 0;
@@ -67,8 +67,6 @@ void LocationService_Init(UART_HandleTypeDef *huart, TIM_HandleTypeDef* htim)
 	trilaterationCalcFPartial = - pow(slaveBeaconLocationB2.longitude, 2) + pow(slaveBeaconLocationB3.longitude, 2) - pow(slaveBeaconLocationB2.latitude, 2) + pow(slaveBeaconLocationB3.latitude, 2);
 
 	JDY18Driver_InquireDevices(bleHandler.huart);
-
-	HAL_TIM_Base_Start_IT(htim);
 }
 
 float LocationService_CalculateDistance(int rssi)

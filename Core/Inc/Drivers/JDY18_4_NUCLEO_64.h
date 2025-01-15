@@ -50,7 +50,8 @@
 #define MAC_ADDRESS_SIZE 12
 #define MAX_DEVICE_NAME_SIZE 30
 
-typedef enum {
+typedef enum
+{
 	SET_NAME = 0,
 	SET_BAUD_RATE,
 	SET_ROLE,
@@ -60,7 +61,8 @@ typedef enum {
 	AT_INSTRUCTIONS_SIZE
 } AtInstruction_t;
 
-typedef enum {
+typedef enum
+{
 	BAUD_1200 = 1,
 	BAUD_2400,
 	BAUD_4800,
@@ -72,34 +74,39 @@ typedef enum {
 	BAUD_230400
 } BaudRate_t;
 
-typedef enum {
+typedef enum
+{
 	SLAVE = 0,
-    MASTER = 1,
-    IBEACON = 3,
+	MASTER = 1,
+	IBEACON = 3,
 } RoleParam_t;
 
-typedef enum {
+typedef enum
+{
 	NO_PARITY = 0,
-    ODD_PARITY,
-    EVEN_PARITY,
+	ODD_PARITY,
+	EVEN_PARITY,
 } ParityParam_t;
 
-typedef struct {
-	UART_HandleTypeDef* huart;
-	char* name;
+typedef struct
+{
+	UART_HandleTypeDef *huart;
+	char *name;
 	BaudRate_t baudRate;
 	RoleParam_t role;
 	ParityParam_t parity;
 	uint8_t stopBit;
 } JDY18_HandleTypeDef;
 
-typedef struct {
+typedef struct
+{
 	char name[MAX_DEVICE_NAME_SIZE];
 	char mac[MAC_ADDRESS_SIZE];
 	int rssi;
 } device_t;
 
-typedef struct {
+typedef struct
+{
 	device_t devices[MAX_DEVICE_LIST];
 	size_t size;
 } scan_t;
@@ -109,7 +116,7 @@ typedef struct {
  *
  * @param handler JDY18_HandleTypeDef pointer to module handler.
  */
-void JDY18Driver_Init(JDY18_HandleTypeDef* handler);
+void JDY18Driver_Init(JDY18_HandleTypeDef *handler);
 
 /**
  * @brief Send data to Bluetooth module.
@@ -117,7 +124,14 @@ void JDY18Driver_Init(JDY18_HandleTypeDef* handler);
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  * @param data Data to send to Bluetooth module.
  */
-void JDY18Driver_SendData(UART_HandleTypeDef* huart, char *data);
+void JDY18Driver_SendData(UART_HandleTypeDef *huart, char *data);
+
+/**
+ * @brief Set the perm of Bluetooth module.
+ *
+ * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
+ */
+void JDY18Driver_SetPerm(UART_HandleTypeDef *huart);
 
 /**
  * @brief Set the name of Bluetooth module.
@@ -125,7 +139,7 @@ void JDY18Driver_SendData(UART_HandleTypeDef* huart, char *data);
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  * @param name  Name of Bluetooth module.
  */
-void JDY18Driver_SetName(UART_HandleTypeDef* huart, char *name);
+void JDY18Driver_SetName(UART_HandleTypeDef *huart, char *name);
 
 /**
  * @brief Set the baud rate of Bluetooth module.
@@ -133,7 +147,7 @@ void JDY18Driver_SetName(UART_HandleTypeDef* huart, char *name);
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  * @param baudRate Baud rate of Bluetooth module.
  */
-void JDY18Driver_SetBaudRate(UART_HandleTypeDef* huart, BaudRate_t baudRate);
+void JDY18Driver_SetBaudRate(UART_HandleTypeDef *huart, BaudRate_t baudRate);
 
 /**
  * @brief Set the role of Bluetooth module.
@@ -141,7 +155,7 @@ void JDY18Driver_SetBaudRate(UART_HandleTypeDef* huart, BaudRate_t baudRate);
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  * @param role Role of Bluetooth module.
  */
-void JDY18Driver_SetRole(UART_HandleTypeDef* huart, RoleParam_t role);
+void JDY18Driver_SetRole(UART_HandleTypeDef *huart, RoleParam_t role);
 
 /**
  * @brief Set the parity of Bluetooth module.
@@ -149,7 +163,7 @@ void JDY18Driver_SetRole(UART_HandleTypeDef* huart, RoleParam_t role);
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  * @param parity Parity of Bluetooth module.
  */
-void JDY18Driver_SetParity(UART_HandleTypeDef* huart, ParityParam_t parity);
+void JDY18Driver_SetParity(UART_HandleTypeDef *huart, ParityParam_t parity);
 
 /**
  * @brief Set the stop bit of Bluetooth module.
@@ -157,21 +171,21 @@ void JDY18Driver_SetParity(UART_HandleTypeDef* huart, ParityParam_t parity);
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  * @param stopBit Stop bit of Bluetooth module.
  */
-void JDY18Driver_SetStopBit(UART_HandleTypeDef* huart, uint8_t stopBit);
+void JDY18Driver_SetStopBit(UART_HandleTypeDef *huart, uint8_t stopBit);
 
 /**
  * @brief Master mode: Inquire Bluetooth devices.
  *
  * @param huart UART_HandleTypeDef pointer to UART handler associated to the Bluetooth module.
  */
-void JDY18Driver_InquireDevices(UART_HandleTypeDef* huart);
+void JDY18Driver_InquireDevices(UART_HandleTypeDef *huart);
 
 /**
  * @brief Return the latest scanned devices.
  *
  * @param scan scan_t pointer to structure where devices information are located.
  */
-void JDY18Driver_GetScannedDevices(scan_t* scan);
+void JDY18Driver_GetScannedDevices(scan_t *scan);
 
 /**
  * @brief Populate device with information available in string.
@@ -180,7 +194,7 @@ void JDY18Driver_GetScannedDevices(scan_t* scan);
  * @param end  char pointer to the end of the string.
  * @param device device_t pointer to structure to be populated.
  */
-void JDY18Driver_LoadDeviceInfo(char* start, char* end, device_t* device);
+void JDY18Driver_LoadDeviceInfo(char *start, char *end, device_t *device);
 
 /**
  * @brief Parse scan response.
@@ -188,7 +202,7 @@ void JDY18Driver_LoadDeviceInfo(char* start, char* end, device_t* device);
  * @param scanResponse char pointer to complete scan response.
  * @param scan scan_t pointer to structure that should be populated.
  */
-void JDY18Driver_ParseScanResponse(char* scanResponse, scan_t* scan);
+void JDY18Driver_ParseScanResponse(char *scanResponse, scan_t *scan);
 
 /**
  * @brief Rx Transfer completed callbacks.
